@@ -1,82 +1,190 @@
-import Head from 'next/head'
+import React from "react";
+import Hotkeys from "react-hot-keys";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Keyboard from "../components/keyboard";
+import Word from "../components/word";
+import words5 from "../lib/words5";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+export default class Index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      guess: "",
+      target: "canto",
+      attempts: [],
+      matrix: [],
+      tried: [],
+      present: [],
+      correct: [],
+      win: false,
+    };
+  }
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+  handleKey = (keyName) => {
+    const { attempts, guess, win } = this.state;
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
+    if (win == false && attempts.length < 6) {
+      if (keyName === "return" || keyName === "enter") {
+        if (guess.length != 5) {
+          toast("No hay suficientes letras para una palabra.");
+        } else if (!words5.includes(guess)) {
+          toast("La palabra no está en el diccionario.");
+        } else {
+          this.processWord();
+        }
+      } else if (keyName === "backspace" || keyName === "space") {
+        if (guess.length > 0) {
+          this.setState({
+            guess: guess.substring(0, guess.length - 1),
+          });
+        }
+      } else if (guess.length < 5) {
+        this.setState({
+          guess: guess + keyName,
+        });
+      }
+    }
+  };
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+  processWord = () => {
+    const { target, guess } = this.state;
 
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+    const info_row = [];
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+    for (let i = 0; i < target.length; i++) {
+      if (guess.charAt(i) == target.charAt(i)) {
+        info_row.push("c");
+        this.setState({
+          correct: [...this.state.correct, guess.charAt(i)],
+        });
+      } else if (target.includes(guess.charAt(i))) {
+        info_row.push("p");
+        this.setState({
+          present: [...this.state.present, guess.charAt(i)],
+        });
+      } else {
+        info_row.push("-");
+        this.setState({
+          tried: [...this.state.tried, guess.charAt(i)],
+        });
+      }
+    }
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+    this.setState({
+      matrix: [...this.state.matrix, info_row],
+    });
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
-    </div>
-  )
+    this.setState({
+      attempts: [...this.state.attempts, guess],
+      guess: "",
+    });
+
+    if (target == guess) {
+      this.setState({
+        win: true,
+      });
+    }
+  };
+
+  onKeyUp = (keyName, e, handle) => {
+    this.handleKey(keyName);
+  };
+
+  render() {
+    const { guess, attempts, matrix, tried, present, correct } = this.state;
+
+    let { word1, word2, word3, word4, word5, word6 } = ["", "", "", "", "", ""];
+
+    if (attempts.length == 0) {
+      word1 = guess;
+    } else if (attempts.length == 1) {
+      word1 = attempts[0];
+      word2 = guess;
+    } else if (attempts.length == 2) {
+      word1 = attempts[0];
+      word2 = attempts[1];
+      word3 = guess;
+    } else if (attempts.length == 3) {
+      word1 = attempts[0];
+      word2 = attempts[1];
+      word3 = attempts[2];
+      word4 = guess;
+    } else if (attempts.length == 4) {
+      word1 = attempts[0];
+      word2 = attempts[1];
+      word3 = attempts[2];
+      word4 = attempts[3];
+      word5 = guess;
+    } else if (attempts.length == 5) {
+      word1 = attempts[0];
+      word2 = attempts[1];
+      word3 = attempts[2];
+      word4 = attempts[3];
+      word5 = attempts[4];
+      word6 = guess;
+    } else if (attempts.length == 6) {
+      word1 = attempts[0];
+      word2 = attempts[1];
+      word3 = attempts[2];
+      word4 = attempts[3];
+      word5 = attempts[4];
+      word6 = attempts[5];
+    }
+
+    return (
+      <Hotkeys
+        keyName="q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,return,space"
+        // onKeyDown={this.onKeyDown.bind(this)}
+        onKeyUp={this.onKeyUp.bind(this)}
+      >
+        <>
+          <ToastContainer
+            position="top-center"
+            autoClose={2500}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            closeButton={false}
+            theme="dark"
+          />
+
+          <div className="flex flex-col h-screen">
+            <header className="">
+              <div className="container mx-auto max-w-screen-sm mb-4 py-2 border-b">
+                <div className="text-center">
+                  <h1 className="uppercase font-extrabold text-4xl tracking-wider">
+                    Wordle.es
+                  </h1>
+                </div>
+              </div>
+            </header>
+
+            <div className="container mx-auto my-auto max-w-xs">
+              <div className="grid grid-rows-1 grid-flow-row gap-1">
+                <Word word={word1} info={matrix[0]} />
+                <Word word={word2} info={matrix[1]} />
+                <Word word={word3} info={matrix[2]} />
+                <Word word={word4} info={matrix[3]} />
+                <Word word={word5} info={matrix[4]} />
+                <Word word={word6} info={matrix[5]} />
+              </div>
+            </div>
+            <div>
+              <Keyboard
+                tried={tried}
+                present={present}
+                correct={correct}
+                clickHandler={this.handleKey}
+              />
+            </div>
+          </div>
+        </>
+      </Hotkeys>
+    );
+  }
 }
