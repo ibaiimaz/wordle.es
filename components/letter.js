@@ -1,5 +1,5 @@
 export default function Letter({ letter, state }) {
-  if (state) {
+  if (state && state != "-") {
     let color = "bg-absent";
 
     if (state == "c") {

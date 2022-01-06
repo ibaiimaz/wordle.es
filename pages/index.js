@@ -1,7 +1,9 @@
+import { BeakerIcon } from "@heroicons/react/solid";
 import React from "react";
 import Hotkeys from "react-hot-keys";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import InfoModal from "../components/info";
 import Keyboard from "../components/keyboard";
 import Word from "../components/word";
 import words5 from "../lib/words5";
@@ -10,8 +12,9 @@ export default class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showModal: true,
       guess: "",
-      target: "canto",
+      target: "coche",
       attempts: [],
       matrix: [],
       tried: [],
@@ -20,6 +23,10 @@ export default class Index extends React.Component {
       win: false,
     };
   }
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
 
   handleKey = (keyName) => {
     const { attempts, guess, win } = this.state;
@@ -33,7 +40,7 @@ export default class Index extends React.Component {
         } else {
           this.processWord();
         }
-      } else if (keyName === "backspace" || keyName === "space") {
+      } else if (keyName === "backspace") {
         if (guess.length > 0) {
           this.setState({
             guess: guess.substring(0, guess.length - 1),
@@ -87,12 +94,13 @@ export default class Index extends React.Component {
     }
   };
 
-  onKeyUp = (keyName, e, handle) => {
+  onKeyDown = (keyName, e, handle) => {
     this.handleKey(keyName);
   };
 
   render() {
-    const { guess, attempts, matrix, tried, present, correct } = this.state;
+    const { showModal, guess, attempts, matrix, tried, present, correct } =
+      this.state;
 
     let { word1, word2, word3, word4, word5, word6 } = ["", "", "", "", "", ""];
 
@@ -134,9 +142,9 @@ export default class Index extends React.Component {
 
     return (
       <Hotkeys
-        keyName="q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,return,space"
-        // onKeyDown={this.onKeyDown.bind(this)}
-        onKeyUp={this.onKeyUp.bind(this)}
+        keyName="q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,ñ,z,x,c,v,b,n,m,return,space,backspace"
+        onKeyDown={this.onKeyDown.bind(this)}
+        // onKeyUp={this.onKeyUp.bind(this)}
       >
         <>
           <ToastContainer
@@ -153,9 +161,12 @@ export default class Index extends React.Component {
             theme="dark"
           />
 
+          {showModal ? <InfoModal closeModal={this.closeModal} /> : null}
+
           <div className="flex flex-col h-screen">
-            <header className="">
+            <header>
               <div className="container mx-auto max-w-screen-sm mb-4 py-2 border-b">
+                <BeakerIcon className="h-5 w-5 text-blue-500" />
                 <div className="text-center">
                   <h1 className="uppercase font-extrabold text-4xl tracking-wider">
                     Wordle.es

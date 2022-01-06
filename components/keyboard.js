@@ -3,7 +3,7 @@ import Key from "../components/key";
 export default function Keyboard({ tried, present, correct, clickHandler }) {
   console.log(present);
   const row1letters = "qwertyuiop";
-  const row2letters = "asdfghjkl";
+  const row2letters = "asdfghjklñ";
   const row3letters = "zxcvbnm";
 
   const row1 = row1letters.split("").map((letter, index) => {
