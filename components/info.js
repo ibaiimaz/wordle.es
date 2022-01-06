@@ -26,7 +26,7 @@ export default function InfoModal({ closeModal }) {
               </p>
               <Word word="perro" info="-p" />
               <p className="my-4 text-lg leading-relaxed">
-                La letra <b>P</b> está en la palabra pero en la posición
+                La letra <b>E</b> está en la palabra pero en la posición
                 incorrecta.
               </p>
               <Word word="canto" info="---- " />
