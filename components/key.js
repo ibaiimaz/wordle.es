@@ -1,19 +1,17 @@
 import { BackspaceIcon } from "@heroicons/react/outline";
+import React, { useContext } from "react";
+import { GameContext } from "../components/context";
 
-export default function Key({
-  keyName,
-  tried,
-  present,
-  correct,
-  clickHandler,
-}) {
+export default function Key({ keyName, clickHandler }) {
+  const game = useContext(GameContext);
+
   let color = "bg-gray-200";
 
-  if (correct && correct.includes(keyName)) {
+  if (game.correct.includes(keyName)) {
     color = "bg-correct";
-  } else if (present && present.includes(keyName)) {
+  } else if (game.present.includes(keyName)) {
     color = "bg-present";
-  } else if (tried && tried.includes(keyName)) {
+  } else if (game.tried.includes(keyName)) {
     color = "bg-absent";
   }
 

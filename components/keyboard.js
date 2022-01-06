@@ -7,42 +7,15 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
   const row3letters = "zxcvbnm";
 
   const row1 = row1letters.split("").map((letter, index) => {
-    return (
-      <Key
-        key={index}
-        keyName={letter}
-        tried={tried}
-        present={present}
-        correct={correct}
-        clickHandler={clickHandler}
-      />
-    );
+    return <Key key={index} keyName={letter} clickHandler={clickHandler} />;
   });
 
   const row2 = row2letters.split("").map((letter, index) => {
-    return (
-      <Key
-        key={index}
-        keyName={letter}
-        tried={tried}
-        present={present}
-        correct={correct}
-        clickHandler={clickHandler}
-      />
-    );
+    return <Key key={index} keyName={letter} clickHandler={clickHandler} />;
   });
 
   const row3 = row3letters.split("").map((letter, index) => {
-    return (
-      <Key
-        key={index}
-        keyName={letter}
-        tried={tried}
-        present={present}
-        correct={correct}
-        clickHandler={clickHandler}
-      />
-    );
+    return <Key key={index} keyName={letter} clickHandler={clickHandler} />;
   });
   row3.splice(
     0,
