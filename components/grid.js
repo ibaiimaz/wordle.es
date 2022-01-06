@@ -6,36 +6,36 @@ import { GameContext } from "../components/context";
 import Word from "../components/word";
 import words5 from "../lib/words5";
 
-export default function WordleGrid({}) {
+export default function WordleGrid({ receiverCreator }) {
   const [guess, setGuess] = useState("");
   const [won, setWon] = useState(false);
 
   const game = useContext(GameContext);
 
   const processWord = () => {
-    // if (!won) {
-    const info_row = [];
+    if (!won) {
+      const info_row = [];
 
-    for (let i = 0; i < game.target.length; i++) {
-      if (guess.charAt(i) == game.target.charAt(i)) {
-        info_row.push("c");
-        game.setCorrect([...game.correct, guess.charAt(i)]);
-      } else if (game.target.includes(guess.charAt(i))) {
-        info_row.push("p");
-        game.setPresent([...game.present, guess.charAt(i)]);
-      } else {
-        info_row.push("i");
-        game.setTried([...game.tried, guess.charAt(i)]);
+      for (let i = 0; i < game.target.length; i++) {
+        if (guess.charAt(i) == game.target.charAt(i)) {
+          info_row.push("c");
+          game.setCorrect([...game.correct, guess.charAt(i)]);
+        } else if (game.target.includes(guess.charAt(i))) {
+          info_row.push("p");
+          game.setPresent([...game.present, guess.charAt(i)]);
+        } else {
+          info_row.push("i");
+          game.setTried([...game.tried, guess.charAt(i)]);
+        }
+      }
+
+      setGuess("");
+      game.setMatrix([...game.matrix, info_row]);
+      game.setAttempts([...game.attempts, guess]);
+      if (game.target == guess) {
+        setWon(true);
       }
     }
-
-    setGuess("");
-    game.setMatrix([...game.matrix, info_row]);
-    game.setAttempts([...game.attempts, guess]);
-    if (game.target == guess) {
-      setWon(true);
-    }
-    // }
   };
 
   const handleKey = (keyName) => {
@@ -58,9 +58,18 @@ export default function WordleGrid({}) {
     }
   };
 
+  // Handle the keyboard events
   const onKeyDown = (keyName, e, handle) => {
     handleKey(keyName);
   };
+
+  // To receive the UI keyboard clicked
+  const onCountReceived = (keyName) => {
+    console.log(keyName);
+    handleKey(keyName);
+  };
+  receiverCreator(onCountReceived);
+  // end
 
   let { word1, word2, word3, word4, word5, word6 } = ["", "", "", "", "", ""];
 

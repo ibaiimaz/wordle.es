@@ -10,7 +10,7 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
     return (
       <Key
         key={index}
-        letter={letter}
+        keyName={letter}
         tried={tried}
         present={present}
         correct={correct}
@@ -23,7 +23,7 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
     return (
       <Key
         key={index}
-        letter={letter}
+        keyName={letter}
         tried={tried}
         present={present}
         correct={correct}
@@ -36,7 +36,7 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
     return (
       <Key
         key={index}
-        letter={letter}
+        keyName={letter}
         tried={tried}
         present={present}
         correct={correct}
@@ -47,10 +47,10 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
   row3.splice(
     0,
     0,
-    <Key key="return" letter="enter" clickHandler={clickHandler} />
+    <Key key="return" keyName="enter" clickHandler={clickHandler} />
   );
   row3.push(
-    <Key key="backspace" letter="backspace" clickHandler={clickHandler} />
+    <Key key="backspace" keyName="backspace" clickHandler={clickHandler} />
   );
 
   return (

@@ -3,10 +3,21 @@ import React, { useContext, useState } from "react";
 import { GameContext, GameContextProvider } from "../components/context";
 import WordleGrid from "../components/grid";
 import InfoModal from "../components/info";
+import Keyboard from "../components/keyboard";
 
 export default function Index({}) {
   const [showModal, setShowModal] = useState(false);
   const state = useContext(GameContext);
+
+  let receiver = (keyName) => {};
+
+  const trigger = (keyName) => {
+    receiver && receiver(keyName);
+  };
+
+  const receiverCreator = (handler) => {
+    receiver = handler;
+  };
 
   return (
     <>
@@ -33,11 +44,10 @@ export default function Index({}) {
             </div>
           </header>
 
-          <WordleGrid />
+          <WordleGrid receiverCreator={receiverCreator} />
+
           <div>
-            {/* <Keyboard
-            clickHandler={this.handleKey}
-          /> */}
+            <Keyboard clickHandler={trigger} />
           </div>
         </div>
       </GameContextProvider>
