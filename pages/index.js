@@ -1,13 +1,13 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline";
-import React, { useContext, useState } from "react";
-import { GameContext, GameContextProvider } from "../components/context";
+import React, { useState } from "react";
+import { GameContextProvider } from "../components/context";
 import WordleGrid from "../components/grid";
 import InfoModal from "../components/info";
 import Keyboard from "../components/keyboard";
 
 export default function Index({}) {
-  const [showModal, setShowModal] = useState(false);
-  const state = useContext(GameContext);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  // const game = useContext(GameContext);
 
   let receiver = (keyName) => {};
 
@@ -21,19 +21,19 @@ export default function Index({}) {
 
   return (
     <>
-      {showModal ? (
+      {showHelpModal ? (
         <InfoModal
           closeModal={() => {
-            setShowModal(false);
+            setShowHelpModal(false);
           }}
         />
       ) : null}
 
       <GameContextProvider>
-        {showModal ? (
+        {showHelpModal ? (
           <InfoModal
             closeModal={() => {
-              setShowModal(false);
+              setShowHelpModal(false);
             }}
           />
         ) : null}
@@ -44,7 +44,7 @@ export default function Index({}) {
               <button
                 className="my-2 flex-none"
                 onClick={() => {
-                  setShowModal(true);
+                  setShowHelpModal(true);
                 }}
               >
                 <QuestionMarkCircleIcon className="h-6 w-6 text-gray-500" />
