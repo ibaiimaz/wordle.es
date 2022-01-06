@@ -29,14 +29,6 @@ export default function Index({}) {
       ) : null}
 
       <GameContextProvider>
-        {showHelpModal ? (
-          <InfoModal
-            closeModal={() => {
-              setShowHelpModal(false);
-            }}
-          />
-        ) : null}
-
         <div className="flex flex-col h-screen">
           <header>
             <div className="flex flex-row mx-auto max-w-screen-sm mb-4 py-2 border-b">
