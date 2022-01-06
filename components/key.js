@@ -1,3 +1,5 @@
+import { BackspaceIcon } from "@heroicons/react/outline";
+
 export default function Key({
   keyName,
   tried,
@@ -15,14 +17,19 @@ export default function Key({
     color = "bg-absent";
   }
 
+  let el = keyName;
+  if (keyName == "backspace") {
+    el = <BackspaceIcon className="h-6 w-6" />;
+  }
+
   return (
     <button
-      className={`rounded uppercase font-bold p-2 min-w-[45px] h-16 ${color}`}
+      className={`rounded uppercase font-bold p-2 min-w-[32px] md:min-w-[45px] h-16 ${color}`}
       onClick={() => {
         clickHandler ? clickHandler(keyName) : null;
       }}
     >
-      {keyName}
+      {el}
     </button>
   );
 }

@@ -54,7 +54,7 @@ export default function Keyboard({ tried, present, correct, clickHandler }) {
   );
 
   return (
-    <div className="grid my-5 mx-auto max-w-lg gap-2">
+    <div className="grid my-5 mx-auto gap-2">
       <div className="flex mx-auto gap-1">{row1}</div>
       <div className="flex mx-auto gap-1">{row2}</div>
       <div className="flex mx-auto gap-1">{row3}</div>
