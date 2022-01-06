@@ -31,7 +31,7 @@ export default function Index({}) {
       <GameContextProvider>
         <div className="flex flex-col h-screen">
           <header>
-            <div className="flex flex-row mx-auto max-w-screen-sm mb-4 py-2 border-b">
+            <div className="flex flex-row mx-2 sm:mx-auto max-w-screen-sm py-2 border-b">
               <button
                 className="my-2 flex-none"
                 onClick={() => {
@@ -46,6 +46,8 @@ export default function Index({}) {
                   Wordle.es
                 </h1>
               </div>
+
+              <QuestionMarkCircleIcon className="h-6 w-6 text-white" />
             </div>
           </header>
 

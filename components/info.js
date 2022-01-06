@@ -33,6 +33,9 @@ export default function InfoModal({ closeModal }) {
               <p className="my-4 text-lg leading-relaxed">
                 La letra <b>O</b> no está en la palabra.
               </p>
+              <p className="my-4 text-lg leading-relaxed">
+                Una palabra nueva cada día.
+              </p>
             </div>
             {/*footer*/}
             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
