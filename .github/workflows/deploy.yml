@@ -27,8 +27,8 @@ jobs:
         id: cached-node_modules-dependencies
         uses: actions/cache@v2
         with:
-          path: js/node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('js/package*.json') }}
+          path: node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('package*.json') }}
 
       - name: Install JS deps
         if: steps.cached-node_modules-dependencies.outputs.cache-hit != 'true'
@@ -47,7 +47,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_DEPLOY_TO_PROD: true
-          build_directory: js/out
+          build_directory: out
 
       - name: Push website (branch)
         uses: jsmrcaga/action-netlify-deploy@master
@@ -55,11 +55,11 @@ jobs:
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          build_directory: js/out
+          build_directory: out
 
       - name: Upload website
         uses: actions/upload-artifact@v1
         if: always()
         with:
           name: website
-          path: js/out
+          path: out
