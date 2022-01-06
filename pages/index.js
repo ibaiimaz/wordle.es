@@ -6,8 +6,7 @@ import InfoModal from "../components/info";
 import Keyboard from "../components/keyboard";
 
 export default function Index({}) {
-  const [showHelpModal, setShowHelpModal] = useState(false);
-  // const game = useContext(GameContext);
+  const [showHelpModal, setShowHelpModal] = useState(true);
 
   let receiver = (keyName) => {};
 
