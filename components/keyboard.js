@@ -1,4 +1,4 @@
-import Key from "../components/key";
+import Key from "./KeyboardKey";
 
 export default function Keyboard({ tried, present, correct, clickHandler }) {
   console.log(present);

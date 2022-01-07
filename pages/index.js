@@ -1,9 +1,9 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
-import { GameContextProvider } from "../components/context";
-import WordleGrid from "../components/grid";
-import InfoModal from "../components/info";
-import Keyboard from "../components/keyboard";
+import { GameContextProvider } from "../components/GameContext";
+import WordleGrid from "../components/Grid";
+import InfoModal from "../components/InfoModal";
+import Keyboard from "../components/Keyboard";
 
 export default function Index({}) {
   const [showHelpModal, setShowHelpModal] = useState(true);

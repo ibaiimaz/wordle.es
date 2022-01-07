@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import Hotkeys from "react-hot-keys";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GameContext } from "../components/context";
+import { GameContext } from "../components/GameContext";
 import WinModal from "../components/WinModal";
-import Word from "../components/word";
+import Word from "../components/GridWord";
 import words5 from "../lib/words5";
 
 export default function WordleGrid({ receiverCreator }) {
