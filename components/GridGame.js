@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import Hotkeys from "react-hot-keys";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GameContext } from "../components/GameContext";
-import Word from "../components/GridWord";
-import WinModal from "../components/WinModal";
+import { GameContext } from "./context";
+import WinModal from "./WinModal";
+import Word from "../components/word";
 import words5 from "../lib/words5";
 
 export default function WordleGrid({ receiverCreator }) {
@@ -18,27 +18,18 @@ export default function WordleGrid({ receiverCreator }) {
     if (!won) {
       const info_row = [];
 
-      const newTried = [];
-      const newPresent = [];
-      const newCorrect = [];
-
       for (let i = 0; i < game.target.length; i++) {
         if (guess.charAt(i) == game.target.charAt(i)) {
           info_row.push("c");
-          newCorrect.push(guess.charAt(i));
+          game.setCorrect([...game.correct, guess.charAt(i)]);
         } else if (game.target.includes(guess.charAt(i))) {
           info_row.push("p");
-          newPresent.push(guess.charAt(i));
+          game.setPresent([...game.present, guess.charAt(i)]);
         } else {
           info_row.push("i");
-          console.log("I!");
-          newTried.push(guess.charAt(i));
+          game.setTried([...game.tried, guess.charAt(i)]);
         }
       }
-
-      game.setTried([...game.tried, ...newTried]);
-      game.setPresent([...game.present, ...newPresent]);
-      game.setCorrect([...game.correct, ...newCorrect]);
 
       setGuess("");
       game.setMatrix([...game.matrix, info_row]);
