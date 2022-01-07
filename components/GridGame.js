@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import Hotkeys from "react-hot-keys";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GameContext } from "./context";
-import WinModal from "./WinModal";
-import Word from "../components/word";
 import words5 from "../lib/words5";
+import { GameContext } from "./GameContext";
+import Word from "./GridWord";
+import WinModal from "./WinModal";
 
 export default function WordleGrid({ receiverCreator }) {
   const [guess, setGuess] = useState("");
@@ -17,23 +17,30 @@ export default function WordleGrid({ receiverCreator }) {
   const processWord = () => {
     if (!won) {
       const info_row = [];
+      const newTried = [];
+      const newPresent = [];
+      const newCorrect = [];
 
       for (let i = 0; i < game.target.length; i++) {
         if (guess.charAt(i) == game.target.charAt(i)) {
           info_row.push("c");
-          game.setCorrect([...game.correct, guess.charAt(i)]);
+          newCorrect.push(guess.charAt(i));
         } else if (game.target.includes(guess.charAt(i))) {
           info_row.push("p");
-          game.setPresent([...game.present, guess.charAt(i)]);
+          newPresent.push(guess.charAt(i));
         } else {
           info_row.push("i");
-          game.setTried([...game.tried, guess.charAt(i)]);
+          newTried.push(guess.charAt(i));
         }
       }
 
       setGuess("");
+      game.setTried([...game.tried, ...newTried]);
+      game.setPresent([...game.present, ...newPresent]);
+      game.setCorrect([...game.correct, ...newCorrect]);
       game.setMatrix([...game.matrix, info_row]);
       game.setAttempts([...game.attempts, guess]);
+
       if (game.target == guess) {
         setWon(true);
       }
@@ -67,7 +74,6 @@ export default function WordleGrid({ receiverCreator }) {
 
   // To receive the UI keyboard clicked
   const onCountReceived = (keyName) => {
-    console.log(keyName);
     handleKey(keyName);
   };
   receiverCreator(onCountReceived);
