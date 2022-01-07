@@ -23,11 +23,6 @@ export default function WordleGrid({ receiverCreator }) {
       const newCorrect = [];
 
       for (let i = 0; i < game.target.length; i++) {
-        console.log(i);
-        console.log(guess.charAt(i));
-        console.log(guess.charAt(i) == game.target.charAt(i));
-        console.log(game.target.includes(guess.charAt(i)));
-
         if (guess.charAt(i) == game.target.charAt(i)) {
           info_row.push("c");
           newCorrect.push(guess.charAt(i));

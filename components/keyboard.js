@@ -1,7 +1,6 @@
 import Key from "./KeyboardKey";
 
 export default function Keyboard({ tried, present, correct, clickHandler }) {
-  console.log(present);
   const row1letters = "qwertyuiop";
   const row2letters = "asdfghjklñ";
   const row3letters = "zxcvbnm";
