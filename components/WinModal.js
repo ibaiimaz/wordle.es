@@ -1,10 +1,12 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getTodaysIndex } from "../lib/utils";
 import Counter from "./Counter";
 
 export default function WinModal({ matrix, closeModal }) {
   let rows = [];
-  let shareTxt = `Wordle (ES)   ${matrix.length}/6\n\n`;
+  let todayIndex = getTodaysIndex();
+  let shareTxt = `Wordle (ES) #${todayIndex} ${matrix.length}/6\n\n`;
 
   for (let i = 0; i < matrix.length; i++) {
     let row = [];
@@ -59,7 +61,8 @@ export default function WinModal({ matrix, closeModal }) {
             {/*body*/}
             <div className="relative p-6 flex-auto">
               <p className="my-4 text-lg leading-relaxed">
-                Wordle (ES){"  "}
+                Wordle (ES){"  "}#{todayIndex}
+                {"  "}
                 {matrix.length}/6
               </p>
 
