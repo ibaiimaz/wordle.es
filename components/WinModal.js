@@ -58,8 +58,7 @@ export default function WinModal({ matrix, closeModal }) {
             {/*body*/}
             <div className="relative p-6 flex-auto">
               <p className="my-4 text-lg leading-relaxed">
-                <a href="https://wordle.danielfrg.com">Wordle (ES)</a>
-                {"  "}
+                Wordle (ES){"  "}
                 {matrix.length}/6
               </p>
 

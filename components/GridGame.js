@@ -9,60 +9,29 @@ import WinModal from "./WinModal";
 
 export default function WordleGrid({ receiverCreator }) {
   const [guess, setGuess] = useState("");
-  const [won, setWon] = useState(false);
   const [showWinModal, setShowWinModal] = useState(true);
 
   const game = useContext(GameContext);
 
-  const processWord = () => {
-    if (!won) {
-      const info_row = [];
-      const newTried = [];
-      const newPresent = [];
-      const newCorrect = [];
-
-      for (let i = 0; i < game.target.length; i++) {
-        if (guess.charAt(i) == game.target.charAt(i)) {
-          info_row.push("c");
-          newCorrect.push(guess.charAt(i));
-        } else if (game.target.includes(guess.charAt(i))) {
-          info_row.push("p");
-          newPresent.push(guess.charAt(i));
-        } else {
-          info_row.push("i");
-          newTried.push(guess.charAt(i));
-        }
-      }
-
-      setGuess("");
-      game.setTried([...game.tried, ...newTried]);
-      game.setPresent([...game.present, ...newPresent]);
-      game.setCorrect([...game.correct, ...newCorrect]);
-      game.setMatrix([...game.matrix, info_row]);
-      game.setAttempts([...game.attempts, guess]);
-
-      if (game.target == guess) {
-        setWon(true);
-      }
-    }
-  };
-
   const handleKey = (keyName) => {
-    if (won == false && game.attempts.length < 6) {
-      if (keyName === "return" || keyName === "enter") {
-        if (guess.length != 5) {
-          toast("No hay suficientes letras para una palabra.");
-        } else if (!words5.includes(guess)) {
-          toast("La palabra no está en el diccionario.");
-        } else {
-          processWord();
+    if (!game.won) {
+      if (game.attempts.length < 6) {
+        if (keyName === "return" || keyName === "enter") {
+          if (guess.length != 5) {
+            toast("No hay suficientes letras para una palabra.");
+          } else if (!words5.includes(guess)) {
+            toast("La palabra no está en el diccionario.");
+          } else {
+            game.processWord(guess);
+            setGuess("");
+          }
+        } else if (keyName === "backspace") {
+          if (guess.length > 0) {
+            setGuess(guess.substring(0, guess.length - 1));
+          }
+        } else if (guess.length < 5) {
+          setGuess(guess + keyName);
         }
-      } else if (keyName === "backspace") {
-        if (guess.length > 0) {
-          setGuess(guess.substring(0, guess.length - 1));
-        }
-      } else if (guess.length < 5) {
-        setGuess(guess + keyName);
       }
     }
   };
@@ -124,7 +93,7 @@ export default function WordleGrid({ receiverCreator }) {
       // onKeyUp={this.onKeyUp.bind(this)}
     >
       <>
-        {won && showWinModal ? (
+        {showWinModal && game.won ? (
           <WinModal
             matrix={game.matrix}
             closeModal={() => {
