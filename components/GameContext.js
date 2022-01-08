@@ -18,6 +18,7 @@ const game = {
   setFirstVisit: () => {},
   won: false,
   setWon: () => {},
+  expires: null,
   processWord: () => {},
 };
 
@@ -34,14 +35,32 @@ export const GameContextProvider = (props) => {
   const [correct, setCorrect] = useState([]);
   const [firstVisit, setFirstVisit_] = useState(false);
   const [won, setWon] = useState(false);
+  const [expires, setExpires] = useState(null);
+
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+  );
+  const expires_ = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1
+  );
 
   const setAttempts = (value) => {
     setAttempts_(value);
-    setCookie("attempts", value, { path: "/", secure: true });
+    setCookie("attempts", value, {
+      path: "/",
+      secure: true,
+      expires: expires_,
+    });
   };
   const setFirstVisit = (value) => {
     setFirstVisit_(value);
-    setCookie("first_visit", value, { path: "/", secure: true });
+    setCookie("first_visit", value, {
+      path: "/",
+      secure: true,
+      // expires: new Date("2022-01-08T12:30"),
+    });
   };
 
   const processWord_ = (word) => {
@@ -114,6 +133,8 @@ export const GameContextProvider = (props) => {
     if (!cookies.first_visit) {
       setFirstVisit(true);
     }
+
+    setExpires(expires_);
   }, []);
 
   const values = {
@@ -133,6 +154,7 @@ export const GameContextProvider = (props) => {
     setFirstVisit,
     won,
     setWon,
+    expires,
     processWord,
   };
 
