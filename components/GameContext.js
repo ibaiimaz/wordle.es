@@ -1,5 +1,7 @@
+import { DateTime, Duration } from "luxon";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { getTodaysWord } from "../lib/utils";
 
 const game = {
   target: "",
@@ -18,6 +20,7 @@ const game = {
   setFirstVisit: () => {},
   won: false,
   setWon: () => {},
+  today: null,
   expires: null,
   processWord: () => {},
 };
@@ -27,7 +30,7 @@ export const GameContext = React.createContext({ game });
 export const GameContextProvider = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["wordle.es"]);
 
-  const [target, setTarget] = useState("hueso");
+  const [target, setTarget] = useState("");
   const [attempts, setAttempts_] = useState([]);
   const [matrix, setMatrix] = useState([]);
   const [tried, setTried] = useState([]);
@@ -35,23 +38,29 @@ export const GameContextProvider = (props) => {
   const [correct, setCorrect] = useState([]);
   const [firstVisit, setFirstVisit_] = useState(false);
   const [won, setWon] = useState(false);
+  const [today, setToday] = useState(null);
   const [expires, setExpires] = useState(null);
 
-  const now = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+  const today_ = DateTime.local();
+  let dur = Duration.fromObject({ day: 1 });
+  let expires_ = today_.plus(dur);
+  expires_ = DateTime.fromObject(
+    {
+      year: expires_.year,
+      month: expires_.month,
+      day: expires_.day,
+    },
+    { zone: "America/New_York" }
   );
-  const expires_ = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1
-  );
+  // console.log(today_.toISO());
+  // console.log(expires_.toISO());
 
   const setAttempts = (value) => {
     setAttempts_(value);
     setCookie("attempts", value, {
       path: "/",
       secure: true,
-      expires: expires_,
+      expires: expires_.toJSDate(),
     });
   };
   const setFirstVisit = (value) => {
@@ -63,17 +72,18 @@ export const GameContextProvider = (props) => {
     });
   };
 
-  const processWord_ = (word) => {
+  const processWord_ = (word, target_) => {
     const newState = [];
     const newTried = [];
     const newPresent = [];
     const newCorrect = [];
+    const target2 = target || target_;
 
-    for (let i = 0; i < target.length; i++) {
-      if (word.charAt(i) == target.charAt(i)) {
+    for (let i = 0; i < target2.length; i++) {
+      if (word.charAt(i) == target2.charAt(i)) {
         newState.push("c");
         newCorrect.push(word.charAt(i));
-      } else if (target.includes(word.charAt(i))) {
+      } else if (target2.includes(word.charAt(i))) {
         newState.push("p");
         newPresent.push(word.charAt(i));
       } else {
@@ -103,6 +113,9 @@ export const GameContextProvider = (props) => {
 
   useEffect(() => {
     // Load and process values from cookies
+    const todaysWord = getTodaysWord(today_);
+    setTarget(todaysWord);
+
     if (cookies.attempts) {
       let cMatrix = [];
       let cTried = [];
@@ -111,8 +124,12 @@ export const GameContextProvider = (props) => {
 
       for (let i = 0; i < cookies.attempts.length; i++) {
         const word = cookies.attempts[i];
-        const { newState, newTried, newPresent, newCorrect } =
-          processWord_(word);
+        const { newState, newTried, newPresent, newCorrect } = processWord_(
+          word,
+          todaysWord
+        );
+
+        console.log(word);
         cMatrix = [...cMatrix, newState];
         cTried = [...cTried, ...newTried];
         cPresent = [...cPresent, ...newPresent];
@@ -134,6 +151,7 @@ export const GameContextProvider = (props) => {
       setFirstVisit(true);
     }
 
+    setExpires(today_);
     setExpires(expires_);
   }, []);
 
@@ -154,6 +172,7 @@ export const GameContextProvider = (props) => {
     setFirstVisit,
     won,
     setWon,
+    today,
     expires,
     processWord,
   };

@@ -3,19 +3,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "./GameContext";
 
 export default function Counter() {
-  const [time, setTime] = useState(Date.now());
+  const [time, setTime] = useState(DateTime.local());
   const game = useContext(GameContext);
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 1000);
+    const interval = setInterval(() => setTime(DateTime.local()), 1000);
     return () => {
       clearInterval(interval);
     };
   }, []);
 
-  const date1 = DateTime.fromMillis(time.valueOf());
-  const date2 = DateTime.fromMillis(game.expires.valueOf());
-  const diff = date2.diff(date1, ["hours", "minutes", "seconds"]);
+  const diff = game.expires.diff(time, ["hours", "minutes", "seconds"]);
 
   const hours = String(parseInt(diff.hours)).padStart(2, "0");
   const minutes = String(parseInt(diff.minutes)).padStart(2, "0");
