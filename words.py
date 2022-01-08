@@ -4,16 +4,21 @@ import re
 
 # %%
 
-dict_ = []
+dict1, dict2 = [], []
 
-with open("./public/main.dict", "r") as f:
-    dict_ = f.read().splitlines()
+with open("./public/lista_palabras.txt", "r") as f:
+    dict1 = f.read().splitlines()
+
+with open("./public/lista_palabras_conj.txt", "r") as f:
+    dict2 = f.read().splitlines()
+
+dictall = dict1 + dict2
 
 # %%
 
 all_words = []
 
-for item in dict_:
+for item in dictall:
     parts = item.split("/")
     if len(parts) == 1:
         word = parts[0]
@@ -30,6 +35,8 @@ for item in dict_:
             word = parts[0] + "s"
             all_words.append(word)
 
+
+print(len(all_words))
 
 # %% Clean up words
 
@@ -58,6 +65,8 @@ words_5 = []
 for word in all_words:
     if len(word) == 5:
         words_5.append(word)
+
+print(len(words_5))
 
 # %%
 
