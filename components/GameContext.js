@@ -18,7 +18,7 @@ const game = {
 export const GameContext = React.createContext({ game });
 
 export const GameContextProvider = (props) => {
-  const [target, setTarget] = useState("nieve");
+  const [target, setTarget] = useState("hueso");
   const [matrix, setMatrix] = useState([]);
   const [attempts, setAttempts] = useState([]);
   const [tried, setTried] = useState([]);
