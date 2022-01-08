@@ -15,9 +15,7 @@ export default function Counter() {
 
   const date1 = DateTime.fromMillis(time.valueOf());
   const date2 = DateTime.fromMillis(game.expires.valueOf());
-
   const diff = date2.diff(date1, ["hours", "minutes", "seconds"]);
-  console.log(diff.toObject());
 
   const hours = String(parseInt(diff.hours)).padStart(2, "0");
   const minutes = String(parseInt(diff.minutes)).padStart(2, "0");
