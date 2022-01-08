@@ -135,7 +135,7 @@ export const GameContextProvider = (props) => {
         cPresent = [...cPresent, ...newPresent];
         cCorrect = [...cCorrect, ...newCorrect];
 
-        if (word == target) {
+        if (word == todaysWord) {
           setWon(true);
         }
       }
