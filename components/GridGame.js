@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import words5 from "../lib/words5";
 import { GameContext } from "./GameContext";
 import Word from "./GridWord";
-import WinModal from "./WinModal";
+import WinModal from "./EndModal";
 
 export default function WordleGrid({ receiverCreator }) {
   const [guess, setGuess] = useState("");
@@ -93,7 +93,7 @@ export default function WordleGrid({ receiverCreator }) {
       // onKeyUp={this.onKeyUp.bind(this)}
     >
       <>
-        {showWinModal && game.won ? (
+        {showWinModal && (game.ended || game.won) ? (
           <WinModal
             matrix={game.matrix}
             closeModal={() => {

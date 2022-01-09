@@ -18,6 +18,8 @@ const game = {
   setCorrect: () => {},
   firstVisit: false,
   setFirstVisit: () => {},
+  ended: false,
+  setEnded: () => {},
   won: false,
   setWon: () => {},
   today: null,
@@ -37,6 +39,7 @@ export const GameContextProvider = (props) => {
   const [present, setPresent] = useState([]);
   const [correct, setCorrect] = useState([]);
   const [firstVisit, setFirstVisit_] = useState(false);
+  const [ended, setEnded] = useState(false);
   const [won, setWon] = useState(false);
   const [today, setToday] = useState(null);
   const [expires, setExpires] = useState(null);
@@ -117,7 +120,7 @@ export const GameContextProvider = (props) => {
   };
 
   const processWord = (word) => {
-    if (!won) {
+    if (!ended) {
       const { newRow, newTried, newPresent, newCorrect } = processWord_(word);
 
       setAttempts([...attempts, word]);
@@ -127,7 +130,12 @@ export const GameContextProvider = (props) => {
       setCorrect([...correct, ...newCorrect]);
 
       if (word == target) {
+        setEnded(true);
         setWon(true);
+      }
+
+      if (attempts.length == 5) {
+        setEnded(true);
       }
     }
   };
@@ -157,6 +165,7 @@ export const GameContextProvider = (props) => {
         cCorrect = [...cCorrect, ...newCorrect];
 
         if (word == todaysWord) {
+          setEnded(true);
           setWon(true);
         }
       }
@@ -166,6 +175,10 @@ export const GameContextProvider = (props) => {
       setTried(cTried);
       setPresent(cPresent);
       setCorrect(cCorrect);
+
+      if (cookies.attempts.length == 6) {
+        setEnded(true);
+      }
     }
 
     if (!cookies.first_visit) {
@@ -191,6 +204,8 @@ export const GameContextProvider = (props) => {
     setCorrect,
     firstVisit,
     setFirstVisit,
+    ended,
+    setEnded,
     won,
     setWon,
     today,

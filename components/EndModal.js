@@ -1,9 +1,13 @@
+import React, { useContext } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getTodaysIndex } from "../lib/utils";
 import Counter from "./Counter";
+import { GameContext } from "./GameContext";
 
 export default function WinModal({ matrix, closeModal }) {
+  const game = useContext(GameContext);
+
   let rows = [];
   let todayIndex = getTodaysIndex();
   let shareTxt = `Wordle (ES) #${todayIndex} ${matrix.length}/6\n\n`;
@@ -51,7 +55,7 @@ export default function WinModal({ matrix, closeModal }) {
         theme="dark"
       />
       <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative mx-auto w-[450px]">
+        <div className="relative mx-auto w-auto">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
@@ -74,13 +78,21 @@ export default function WinModal({ matrix, closeModal }) {
             <div className="relative px-6 flex-auto">
               <p className="my-4 text-md whitespace-pre-line">{rows}</p>
             </div>
+            {game.ended && !game.won ? (
+              <div className="relative px-6 flex-auto">
+                <p className="my-4 text-md text-center select-none">
+                  La palabra era:{" "}
+                  <span className="uppercase tracking-wide">{game.target}</span>
+                </p>
+              </div>
+            ) : null}
             {/*footer*/}
-            <div className="flex flex-row p-6 gap-10 border-t border-solid border-blueGray-200">
-              <div className="flex flex-col items-center pl-5 pr-10 border-r border-solid border-blueGray-200">
+            <div className="flex flex-col md:flex-row py-3 px-6 gap-4 md:gap-10 border-t border-solid border-blueGray-200">
+              <div className="flex flex-col items-center md:pl-5 md:pr-10 md:border-r border-solid border-blueGray-200">
                 <p className="mt-2 uppercase font-semibold text-md whitespace-pre-line">
                   Siguiente wordle
                 </p>
-                <p className="m-2 text-4xl whitespace-pre-line">
+                <p className="m-2 text-3xl whitespace-pre-line">
                   <Counter />
                 </p>
               </div>
