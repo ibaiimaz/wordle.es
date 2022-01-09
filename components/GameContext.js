@@ -41,7 +41,7 @@ export const GameContextProvider = (props) => {
   const [today, setToday] = useState(null);
   const [expires, setExpires] = useState(null);
 
-  const today_ = DateTime.local();
+  const today_ = DateTime.local({ zone: "America/New_York" });
   let dur = Duration.fromObject({ day: 1 });
   let expires_ = today_.plus(dur);
   expires_ = DateTime.fromObject(
@@ -129,7 +129,6 @@ export const GameContextProvider = (props) => {
           todaysWord
         );
 
-        console.log(word);
         cMatrix = [...cMatrix, newState];
         cTried = [...cTried, ...newTried];
         cPresent = [...cPresent, ...newPresent];
