@@ -28,7 +28,7 @@ const game = {
 export const GameContext = React.createContext({ game });
 
 export const GameContextProvider = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["wordle.es"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["wordle.es-2"]);
 
   const [target, setTarget] = useState("");
   const [attempts, setAttempts_] = useState([]);
