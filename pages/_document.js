@@ -15,8 +15,33 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta name="description" content="" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+          <meta name="description" content={`${SiteConfig.desc}`}></meta>
 
-          <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+          <meta property="og:url" content="https://danielfrg.wordle.com"></meta>
+          <meta property="og:type" content="website"></meta>
+          <meta property="og:title" content={`${SiteConfig.title}`}></meta>
+          <meta property="og:description" content={`${SiteConfig.desc}`}></meta>
+          <meta
+            property="og:image"
+            content="https://danielfrg.wordle.com/images/wordle_og_1200x630.png"
+          ></meta>
+
+          <meta name="twitter:card" content="summary_large_image"></meta>
+          <meta property="twitter:domain" content="danielfrg.wordle.com"></meta>
+
+          <meta name="theme-color" content="#6aaa64"></meta>
+          <link rel="manifest" href="manifest.json" />
+          <link
+            href="/images/wordle_logo_32x32.png"
+            rel="icon shortcut"
+            sizes="3232"
+          />
+          <link href="/images/wordle_logo_192x192.png" rel="apple-touch-icon" />
+          <link
+            rel="icon"
+            type="image/x-icon"
+            href="/images/wordle_logo_32x32.png"
+          ></link>
 
           <script
             async
