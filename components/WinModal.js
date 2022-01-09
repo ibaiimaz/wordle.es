@@ -50,33 +50,37 @@ export default function WinModal({ matrix, closeModal }) {
         closeButton={false}
         theme="dark"
       />
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+      <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="relative mx-auto w-[450px]">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
-            <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200">
-              <h3 className="text-3xl font-semibold">Felicidades!</h3>
-            </div>
-            {/*body*/}
-            <div className="relative p-6 flex-auto">
-              <p className="my-4 text-lg leading-relaxed">
+            <div className="flex items-start justify-between p-5 pb-0">
+              <h3 className="uppercase text-xl text-center font-bold">
                 Wordle (ES){"  "}#{todayIndex}
                 {"  "}
                 {matrix.length}/6
-              </p>
-
-              <p className="my-4 text-lg leading-relaxed whitespace-pre-line">
-                {rows}
-              </p>
+              </h3>
+              <button
+                className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                onClick={() => closeModal()}
+              >
+                <span className="leading-[0.25] text-black h-6 w-6 text-2xl block outline-none focus:outline-none">
+                  ×
+                </span>
+              </button>
+            </div>
+            {/*body*/}
+            <div className="relative px-6 flex-auto">
+              <p className="my-4 text-md whitespace-pre-line">{rows}</p>
             </div>
             {/*footer*/}
             <div className="flex flex-row p-6 gap-10 border-t border-solid border-blueGray-200">
               <div className="flex flex-col items-center pl-5 pr-10 border-r border-solid border-blueGray-200">
-                <p className="mt-2 uppercase font-semibold text-md leading-relaxed whitespace-pre-line">
+                <p className="mt-2 uppercase font-semibold text-md whitespace-pre-line">
                   Siguiente wordle
                 </p>
-                <p className="m-2 text-4xl leading-relaxed whitespace-pre-line">
+                <p className="m-2 text-4xl whitespace-pre-line">
                   <Counter />
                 </p>
               </div>

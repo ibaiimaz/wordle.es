@@ -4,7 +4,7 @@ export default function InfoModal({ closeModal }) {
   return (
     <>
       <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative mx-auto w-auto max-w-[450px]">
+        <div className="relative mx-auto w-[450px]">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
