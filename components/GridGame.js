@@ -88,7 +88,7 @@ export default function WordleGrid({ receiverCreator }) {
 
   return (
     <Hotkeys
-      keyName="q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,ñ,z,x,c,v,b,n,m,return,space,backspace"
+      keyName="q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,ñ,z,x,c,v,b,n,m,return,backspace"
       onKeyDown={onKeyDown.bind(this)}
       // onKeyUp={this.onKeyUp.bind(this)}
     >
