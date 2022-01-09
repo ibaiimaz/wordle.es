@@ -73,34 +73,55 @@ export const GameContextProvider = (props) => {
   };
 
   const processWord_ = (word, target_) => {
-    const newState = [];
+    const newRow = ["x", "x", "x", "x", "x"];
     const newTried = [];
     const newPresent = [];
     const newCorrect = [];
-    const target2 = target || target_;
+    let target2 = target || target_;
 
-    for (let i = 0; i < target2.length; i++) {
-      if (word.charAt(i) == target2.charAt(i)) {
-        newState.push("c");
-        newCorrect.push(word.charAt(i));
-      } else if (target2.includes(word.charAt(i))) {
-        newState.push("p");
-        newPresent.push(word.charAt(i));
+    // Update letters
+    for (let i = 0; i < word.length; i++) {
+      const char = word.charAt(i);
+
+      if (char == target2.charAt(i)) {
+        newRow[i] = "c";
+        newCorrect.push(char);
+      } else if (target2.includes(char)) {
+        newPresent.push(char);
       } else {
-        newState.push("i");
-        newTried.push(word.charAt(i));
+        newTried.push(char);
       }
     }
 
-    return { newState, newTried, newPresent, newCorrect };
+    // Update present state
+    // remove correct chars from present chars
+    for (let i = 0; i < newCorrect.length; i++) {
+      const correctChar = newCorrect[i];
+      target2 = target2.replace(correctChar, "_");
+    }
+
+    for (let i = 0; i < word.length; i++) {
+      const char = word.charAt(i);
+      // console.log("i:", i);
+      // console.log("target2:", target2);
+      // console.log("char:", char);
+      // console.log("word:", word);
+
+      if (newRow[i] == "x" && target2.includes(char)) {
+        newRow[i] = "p";
+        target2 = target2.replace(char, "_");
+      }
+    }
+
+    return { newRow, newTried, newPresent, newCorrect };
   };
 
   const processWord = (word) => {
     if (!won) {
-      const { newState, newTried, newPresent, newCorrect } = processWord_(word);
+      const { newRow, newTried, newPresent, newCorrect } = processWord_(word);
 
       setAttempts([...attempts, word]);
-      setMatrix([...matrix, newState]);
+      setMatrix([...matrix, newRow]);
       setTried([...tried, ...newTried]);
       setPresent([...present, ...newPresent]);
       setCorrect([...correct, ...newCorrect]);
@@ -112,10 +133,11 @@ export const GameContextProvider = (props) => {
   };
 
   useEffect(() => {
-    // Load and process values from cookies
+    // Set word to the day
     const todaysWord = getTodaysWord(today_);
     setTarget(todaysWord);
 
+    // Load and process values from cookies
     if (cookies.attempts) {
       let cMatrix = [];
       let cTried = [];
@@ -124,12 +146,12 @@ export const GameContextProvider = (props) => {
 
       for (let i = 0; i < cookies.attempts.length; i++) {
         const word = cookies.attempts[i];
-        const { newState, newTried, newPresent, newCorrect } = processWord_(
+        const { newRow, newTried, newPresent, newCorrect } = processWord_(
           word,
           todaysWord
         );
 
-        cMatrix = [...cMatrix, newState];
+        cMatrix = [...cMatrix, newRow];
         cTried = [...cTried, ...newTried];
         cPresent = [...cPresent, ...newPresent];
         cCorrect = [...cCorrect, ...newCorrect];
