@@ -6,7 +6,7 @@ export default function Word({ word, info, size }) {
   }
 
   return (
-    <div className="flex flex-row grid-flow-col gap-1">
+    <div className="flex flex-row gap-1">
       <Letter
         size={size}
         letter={word.charAt(0)}
