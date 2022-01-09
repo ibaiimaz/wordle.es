@@ -30,7 +30,7 @@ export default function InfoModal({ closeModal }) {
                 Después de cada intento, el color de las letras cambia para
                 mostrar que tan cerca estás de acertar la palabra.
               </p>
-              <div class="border-b my-4"></div>
+              <div className="border-b my-4"></div>
               <div>
                 <Word word="gatos" info="c" size={12} />
               </div>
@@ -48,7 +48,7 @@ export default function InfoModal({ closeModal }) {
               <p className="my-4 text-md">
                 La letra <b>O</b> no está en la palabra.
               </p>
-              <div class="border-b my-4"></div>
+              <div className="border-b my-4"></div>
             </div>
             {/*footer*/}
             <div className="flex flex-row gap-10 mb-4 px-6">
