@@ -3,11 +3,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "./GameContext";
 
 export default function Counter() {
-  const [time, setTime] = useState(DateTime.local());
+  const [time, setTime] = useState(
+    DateTime.local({ zone: "America/New_York" })
+  );
   const game = useContext(GameContext);
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(DateTime.local()), 1000);
+    const interval = setInterval(() => {
+      const now = DateTime.local({ zone: "America/New_York" });
+      setTime(now);
+    }, 1000);
     return () => {
       clearInterval(interval);
     };
