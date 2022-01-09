@@ -4,6 +4,7 @@ import { CookiesProvider } from "react-cookie";
 import { GameContextProvider } from "../components/GameContext";
 import SiteConfig from "../lib/config";
 import "../styles/globals.css";
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
