@@ -1,6 +1,6 @@
 export default function Letter({ letter, state, size }) {
   const sizeClass = size
-    ? `w-${size} h-${size} text-4xl`
+    ? `w-full max-w-[${size}] max-h-[${size}] text-4xl`
     : "w-full h-16 text-4xl";
 
   if (state && state != "-") {

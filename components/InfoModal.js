@@ -32,19 +32,19 @@ export default function InfoModal({ closeModal }) {
               </p>
               <div className="border-b my-4"></div>
               <div>
-                <Word word="gatos" info="c" size={12} />
+                <Word word="gatos" info="c" size={"45px"} />
               </div>
               <p className="my-4 text-md">
                 La letra <b>G</b> está en la palabra y en la posición correcta.
               </p>
 
-              <Word word="perro" info="-p" size={12} />
+              <Word word="perro" info="-p" size={"45px"} />
 
               <p className="my-4 text-md">
                 La letra <b>E</b> está en la palabra pero en la posición
                 incorrecta.
               </p>
-              <Word word="canto" info="---- " size={12} />
+              <Word word="canto" info="---- " size={"45px"} />
               <p className="my-4 text-md">
                 La letra <b>O</b> no está en la palabra.
               </p>
