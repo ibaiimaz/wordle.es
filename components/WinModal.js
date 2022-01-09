@@ -80,7 +80,7 @@ export default function WinModal({ matrix, closeModal }) {
                   <Counter />
                 </p>
               </div>
-              <div className="flex flex-col items-center ">
+              <div className="flex flex-col items-center">
                 <button
                   className="w-[100%] bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                   type="button"
