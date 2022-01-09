@@ -4,21 +4,29 @@ import re
 
 # %%
 
-dict1, dict2 = [], []
+dictall = []
 
-with open("./public/lista_palabras.txt", "r") as f:
-    dict1 = f.read().splitlines()
+listas = [
+    "palabras_todas.txt",
+    "main.dict",
+    "lista_palabras.txt",
+    "lista_palabras_conj.txt",
+]
 
-with open("./public/lista_palabras_conj.txt", "r") as f:
-    dict2 = f.read().splitlines()
+for lista in listas:
+    with open(f"./{lista}", "r") as f:
+        dictall.extend(f.read().splitlines())
 
-dictall = dict1 + dict2
+print(len(dictall))
 
 # %%
 
 all_words = []
 
 for item in dictall:
+    if " " in item:
+        continue
+
     parts = item.split("/")
     if len(parts) == 1:
         word = parts[0]
@@ -66,11 +74,12 @@ for word in all_words:
     if len(word) == 5:
         words_5.append(word)
 
+words_5 = list(dict.fromkeys(words_5))
 print(len(words_5))
 
 # %%
 
-with open("./public/palabras_5.json", "w") as f:
-    json.dump(words_5, f, ensure_ascii=False)
+with open("./palabras_5.json", "w") as f:
+    json.dump(sorted(words_5), f, ensure_ascii=False)
 
 # %%

@@ -51,11 +51,11 @@ for letter in letras:
 
 # %%
 
-with open("./public/lista_palabras.txt", "w") as f:
+with open("./lista_palabras.txt", "w") as f:
     for word in sorted(all_words):
         f.write(f"{word}\n")
 
-with open("./public/lista_palabras_conj.txt", "w") as f:
+with open("./lista_palabras_conj.txt", "w") as f:
     for word in sorted(all_words_conj):
         f.write(f"{word}\n")
 
