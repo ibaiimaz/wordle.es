@@ -1,3 +1,3 @@
-# Wordle.ES
+# Wordle (ES)
 
-Like [wordle](https://www.powerlanguage.co.uk/wordle/) in Spanish.
+Like [wordle](https://www.powerlanguage.co.uk/wordle/) but in Spanish.
