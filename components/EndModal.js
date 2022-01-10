@@ -91,8 +91,8 @@ export default function WinModal({ matrix, closeModal }) {
               </div>
             ) : null}
             {/*footer*/}
-            <div className="flex flex-col sm:flex-row py-3 px-6 gap-4 sm:gap-10 border-t border-solid border-blueGray-200">
-              <div className="flex flex-col items-center">
+            <div className="flex flex-col sm:flex-row gap-4 py-3 px-6 sm:gap-10 border-t border-solid border-blueGray-200">
+              <div className="flex flex-col items-center sm:pr-7 sm:border-r">
                 <p className="mt-2 uppercase font-semibold text-md whitespace-pre-line">
                   Siguiente wordle
                 </p>
@@ -108,13 +108,6 @@ export default function WinModal({ matrix, closeModal }) {
                 >
                   Compartir
                 </button>
-                {/* <button
-                  className="w-full bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={closeModal ? () => closeModal() : null}
-                >
-                  Cerrar
-                </button> */}
               </div>
             </div>
           </div>
