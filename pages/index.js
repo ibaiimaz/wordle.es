@@ -57,10 +57,7 @@ export default function Index({}) {
         </header>
 
         <WordleGrid receiverCreator={receiverCreator} />
-
-        <div>
-          <Keyboard clickHandler={trigger} />
-        </div>
+        <Keyboard clickHandler={trigger} />
       </div>
     </>
   );

@@ -1,8 +1,4 @@
-export default function Letter({ letter, state, size }) {
-  const sizeClass = size
-    ? "w-full max-w-[" + size + "}] max-h-[" + size + "}] text-4xl"
-    : "w-full h-16 text-4xl";
-
+export default function Letter({ letter, state }) {
   if (state && state != "-") {
     let color = "bg-absent";
 
@@ -14,7 +10,7 @@ export default function Letter({ letter, state, size }) {
 
     return (
       <div
-        className={`grid ${sizeClass} uppercase font-bold justify-items-center items-center select-none text-white ${color}`}
+        className={`tile inline-flex w-full text-2xl tiny:text-4xl uppercase font-bold select-none text-white ${color}`}
       >
         {letter}
       </div>
@@ -24,7 +20,7 @@ export default function Letter({ letter, state, size }) {
   if (letter === undefined || letter === "") {
     return (
       <div
-        className={`grid ${sizeClass} uppercase font-bold justify-items-center items-center select-none border-2 border-gray-300`}
+        className={`tile inline-flex w-full text-2xl tiny:text-4xl uppercase font-bold select-none border-2 border-gray-300`}
       >
         {letter}
       </div>
@@ -32,7 +28,7 @@ export default function Letter({ letter, state, size }) {
   } else if (letter) {
     return (
       <div
-        className={`grid ${sizeClass} uppercase font-bold justify-items-center items-center select-none border-2 border-gray-500`}
+        className={`tile inline-flex w-full text-2xl tiny:text-4xl uppercase font-bold select-none border-2 border-gray-500`}
       >
         {letter}
       </div>

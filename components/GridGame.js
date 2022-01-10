@@ -14,7 +14,7 @@ export default function WordleGrid({ receiverCreator }) {
   const game = useContext(GameContext);
 
   const handleKey = (keyName) => {
-    if (game.gameStatus === "PLAYING") {
+    if (game.gameStatus != "WIN" && game.gameStatus != "LOSE") {
       if (game.attempts.length < 6) {
         if (keyName === "return" || keyName === "enter") {
           if (guess.length != 5) {
@@ -117,16 +117,18 @@ export default function WordleGrid({ receiverCreator }) {
           theme="dark"
         />
 
-        <div className="container mx-auto my-auto max-w-xs">
-          <div className="flex flex-col gap-1">
-            <Word word={word1} info={game.matrix[0]} />
-            <Word word={word2} info={game.matrix[1]} />
-            <Word word={word3} info={game.matrix[2]} />
-            <Word word={word4} info={game.matrix[3]} />
-            <Word word={word5} info={game.matrix[4]} />
-            <Word word={word6} info={game.matrix[5]} />
+        <main className="container mx-auto my-auto max-w-xs">
+          <div className="m-3  ">
+            <div className="flex flex-col gap-1">
+              <Word word={word1} info={game.matrix[0]} />
+              <Word word={word2} info={game.matrix[1]} />
+              <Word word={word3} info={game.matrix[2]} />
+              <Word word={word4} info={game.matrix[3]} />
+              <Word word={word5} info={game.matrix[4]} />
+              <Word word={word6} info={game.matrix[5]} />
+            </div>
           </div>
-        </div>
+        </main>
       </>
     </Hotkeys>
   );

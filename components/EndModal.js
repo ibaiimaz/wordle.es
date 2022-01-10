@@ -10,7 +10,9 @@ export default function WinModal({ matrix, closeModal }) {
 
   let rows = [];
   let todayIndex = getTodaysIndex();
-  let shareTxt = `Wordle (ES) #${todayIndex} ${matrix.length}/6\n\n`;
+  let shareTxt = `Wordle (ES) #${todayIndex} ${
+    game.gameStatus == "LOSE" ? "X" : matrix.length
+  }/6\n\n`;
 
   for (let i = 0; i < matrix.length; i++) {
     let row = [];
@@ -55,7 +57,7 @@ export default function WinModal({ matrix, closeModal }) {
         theme="dark"
       />
       <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative mx-auto w-auto">
+        <div className="relative mx-auto w-auto max-w-[450px]">
           {/*content*/}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             {/*header*/}
@@ -63,7 +65,7 @@ export default function WinModal({ matrix, closeModal }) {
               <h3 className="uppercase text-xl text-center font-bold">
                 Wordle (ES){"  "}#{todayIndex}
                 {"  "}
-                {matrix.length}/6
+                {game.gameStatus == "LOSE" ? "X" : matrix.length}/6
               </h3>
               <button
                 className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -89,30 +91,30 @@ export default function WinModal({ matrix, closeModal }) {
               </div>
             ) : null}
             {/*footer*/}
-            <div className="flex flex-col md:flex-row py-3 px-6 gap-4 md:gap-10 border-t border-solid border-blueGray-200">
-              <div className="flex flex-col items-center md:pl-5 md:pr-10 md:border-r border-solid border-blueGray-200">
+            <div className="flex flex-col sm:flex-row py-3 px-6 gap-4 sm:gap-10 border-t border-solid border-blueGray-200">
+              <div className="flex flex-col items-center">
                 <p className="mt-2 uppercase font-semibold text-md whitespace-pre-line">
                   Siguiente wordle
                 </p>
-                <p className="m-2 text-3xl whitespace-pre-line">
+                <p className="m-2 text-3xl">
                   <Counter />
                 </p>
               </div>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center self-center">
                 <button
-                  className="w-[100%] bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+                  className="w-full bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                   type="button"
                   onClick={copyToClipboard}
                 >
                   Compartir
                 </button>
-                <button
-                  className="w-[100%] bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+                {/* <button
+                  className="w-full bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                   type="button"
                   onClick={closeModal ? () => closeModal() : null}
                 >
                   Cerrar
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

@@ -45,7 +45,7 @@ export const GameContextProvider = (props) => {
   const [tried, setTried] = useState([]);
   const [present, setPresent] = useState([]);
   const [correct, setCorrect] = useState([]);
-  const [gameStatus, setGameStatus] = useState(null);
+  const [gameStatus, setGameStatus] = useState("PLAYING");
   const [expires, setExpires] = useState(null);
 
   const processWord_ = (word, solution_) => {
@@ -88,7 +88,7 @@ export const GameContextProvider = (props) => {
   };
 
   const processWord = (word) => {
-    if (gameStatus == "PLAYING") {
+    if (game.gameStatus != "WIN" && game.gameStatus != "LOSE") {
       const { newMatrixRow, newTried, newPresent, newCorrect } =
         processWord_(word);
 
@@ -148,6 +148,7 @@ export const GameContextProvider = (props) => {
 
     if (gameState) {
       const state = JSON.parse(gameState);
+      setGameStatus("PLAYING");
 
       let lastPlayed = DateTime.fromMillis(state.lastPlayedTs, {
         zone: "America/New_York",
@@ -157,7 +158,6 @@ export const GameContextProvider = (props) => {
       if (!nextGameStartsAt.equals(savedGameEndDay)) {
         // New day: Reset game
         setAttempts([]);
-        setGameStatus("PLAYING");
       } else {
         // Load board
         let matrix_ = [];

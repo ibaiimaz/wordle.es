@@ -26,10 +26,10 @@ export default function Keyboard({ clickHandler }) {
   );
 
   return (
-    <div className="grid my-5 mx-auto gap-2">
-      <div className="flex mx-auto gap-1">{row1}</div>
-      <div className="flex mx-auto gap-1">{row2}</div>
-      <div className="flex mx-auto gap-1">{row3}</div>
+    <div className="flex flex-col container w-full max-w-lg my-5 px-2 mx-auto gap-2">
+      <div className="flex gap-1">{row1}</div>
+      <div className="flex gap-1">{row2}</div>
+      <div className="flex gap-1">{row3}</div>
     </div>
   );
 }

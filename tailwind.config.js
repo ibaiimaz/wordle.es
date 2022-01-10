@@ -10,6 +10,9 @@ module.exports = {
         present: "rgb(201, 180, 88)",
         correct: "rgb(106, 170, 100)",
       },
+      screens: {
+        tiny: "320px",
+      },
     },
   },
   plugins: [],
