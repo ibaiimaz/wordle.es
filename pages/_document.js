@@ -23,7 +23,7 @@ class MyDocument extends Document {
           <meta property="og:description" content={`${SiteConfig.desc}`}></meta>
           <meta
             property="og:image"
-            content="https://wordle.danielfrg.com/images/wordle_og_1200x630.jpg"
+            content="https://wordle.danielfrg.com/images/wordle_es_og_1200x630.jpeg"
           ></meta>
 
           <meta name="twitter:card" content="summary_large_image"></meta>
