@@ -3,9 +3,9 @@ import Hotkeys from "react-hot-keys";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import words5 from "../lib/words5";
+import WinModal from "./EndModal";
 import { GameContext } from "./GameContext";
 import Word from "./GridWord";
-import WinModal from "./EndModal";
 
 export default function WordleGrid({ receiverCreator }) {
   const [guess, setGuess] = useState("");
@@ -14,7 +14,7 @@ export default function WordleGrid({ receiverCreator }) {
   const game = useContext(GameContext);
 
   const handleKey = (keyName) => {
-    if (!game.won) {
+    if (game.gameStatus === "PLAYING") {
       if (game.attempts.length < 6) {
         if (keyName === "return" || keyName === "enter") {
           if (guess.length != 5) {
@@ -93,7 +93,8 @@ export default function WordleGrid({ receiverCreator }) {
       // onKeyUp={this.onKeyUp.bind(this)}
     >
       <>
-        {showWinModal && (game.ended || game.won) ? (
+        {showWinModal &&
+        (game.gameStatus === "WIN" || game.gameStatus === "LOSE") ? (
           <WinModal
             matrix={game.matrix}
             closeModal={() => {

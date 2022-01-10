@@ -22,11 +22,14 @@ export default function Index({}) {
 
   return (
     <>
-      {showHelpModal || game.firstVisit ? (
+      {showHelpModal || game.gameStatus == "NEW" ? (
         <InfoModal
           closeModal={() => {
             setShowHelpModal(false);
-            game.setFirstVisit(false);
+            if (game.gameStatus == "NEW") {
+              game.setGameStatus("PLAYING");
+              game.saveGame();
+            }
           }}
         />
       ) : null}

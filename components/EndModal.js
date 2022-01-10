@@ -78,11 +78,13 @@ export default function WinModal({ matrix, closeModal }) {
             <div className="relative px-6 flex-auto">
               <p className="my-4 text-md whitespace-pre-line">{rows}</p>
             </div>
-            {game.ended && !game.won ? (
+            {game.gameStatus === "LOSE" ? (
               <div className="relative px-6 flex-auto">
                 <p className="my-4 text-md text-center select-none">
                   La palabra era:{" "}
-                  <span className="uppercase tracking-wide">{game.target}</span>
+                  <span className="uppercase tracking-wide">
+                    {game.solution}
+                  </span>
                 </p>
               </div>
             ) : null}

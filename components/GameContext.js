@@ -1,11 +1,10 @@
 import { DateTime, Duration } from "luxon";
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { getTodaysWord } from "../lib/utils";
 
 const game = {
-  target: "",
-  setTarget: () => {},
+  solution: "",
+  setSolution: () => {},
   attempts: [],
   setAttempts: () => {},
   matrix: [],
@@ -16,80 +15,54 @@ const game = {
   setPresent: () => {},
   correct: [],
   setCorrect: () => {},
-  firstVisit: false,
-  setFirstVisit: () => {},
-  ended: false,
-  setEnded: () => {},
-  won: false,
-  setWon: () => {},
-  today: null,
-  expires: null,
-  processWord: () => {},
+  gameStatus: null,
+  setGameStatus: () => {},
+  saveGame: () => {},
 };
 
 export const GameContext = React.createContext({ game });
 
-export const GameContextProvider = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["wordle.es-2"]);
+export function getEndTimeForDate(date) {
+  // Returns the end of the time for the given date
 
-  const [target, setTarget] = useState("");
-  const [attempts, setAttempts_] = useState([]);
+  let endTime = date.plus(Duration.fromObject({ day: 1 }));
+  endTime = DateTime.fromObject(
+    {
+      year: endTime.year,
+      month: endTime.month,
+      day: endTime.day,
+    },
+    { zone: "America/New_York" }
+  );
+
+  return endTime;
+}
+
+export const GameContextProvider = (props) => {
+  const [solution, setSolution] = useState(null);
+  const [attempts, setAttempts] = useState([]);
   const [matrix, setMatrix] = useState([]);
   const [tried, setTried] = useState([]);
   const [present, setPresent] = useState([]);
   const [correct, setCorrect] = useState([]);
-  const [firstVisit, setFirstVisit_] = useState(false);
-  const [ended, setEnded] = useState(false);
-  const [won, setWon] = useState(false);
-  const [today, setToday] = useState(null);
+  const [gameStatus, setGameStatus] = useState(null);
   const [expires, setExpires] = useState(null);
 
-  const today_ = DateTime.local({ zone: "America/New_York" });
-  let dur = Duration.fromObject({ day: 1 });
-  let expires_ = today_.plus(dur);
-  expires_ = DateTime.fromObject(
-    {
-      year: expires_.year,
-      month: expires_.month,
-      day: expires_.day,
-    },
-    { zone: "America/New_York" }
-  );
-  // console.log(today_.toISO());
-  // console.log(expires_.toISO());
-
-  const setAttempts = (value) => {
-    setAttempts_(value);
-    setCookie("attempts", value, {
-      path: "/",
-      secure: true,
-      expires: expires_.toJSDate(),
-    });
-  };
-  const setFirstVisit = (value) => {
-    setFirstVisit_(value);
-    setCookie("first_visit", value, {
-      path: "/",
-      secure: true,
-      // expires: new Date("2022-01-08T12:30"),
-    });
-  };
-
-  const processWord_ = (word, target_) => {
-    const newRow = ["x", "x", "x", "x", "x"];
-    const newTried = [];
-    const newPresent = [];
-    const newCorrect = [];
-    let target2 = target || target_;
+  const processWord_ = (word, solution_) => {
+    let solution2 = solution || solution_;
+    let newMatrixRow = ["x", "x", "x", "x", "x"];
+    let newTried = [];
+    let newPresent = [];
+    let newCorrect = [];
 
     // Update letters
     for (let i = 0; i < word.length; i++) {
       const char = word.charAt(i);
 
-      if (char == target2.charAt(i)) {
-        newRow[i] = "c";
+      if (char == solution2.charAt(i)) {
+        newMatrixRow[i] = "c";
         newCorrect.push(char);
-      } else if (target2.includes(char)) {
+      } else if (solution2.includes(char)) {
         newPresent.push(char);
       } else {
         newTried.push(char);
@@ -100,98 +73,135 @@ export const GameContextProvider = (props) => {
     // remove correct chars from present chars
     for (let i = 0; i < newCorrect.length; i++) {
       const correctChar = newCorrect[i];
-      target2 = target2.replace(correctChar, "_");
+      solution2 = solution2.replace(correctChar, "_");
     }
 
     for (let i = 0; i < word.length; i++) {
       const char = word.charAt(i);
-      // console.log("i:", i);
-      // console.log("target2:", target2);
-      // console.log("char:", char);
-      // console.log("word:", word);
-
-      if (newRow[i] == "x" && target2.includes(char)) {
-        newRow[i] = "p";
-        target2 = target2.replace(char, "_");
+      if (newMatrixRow[i] == "x" && solution2.includes(char)) {
+        newMatrixRow[i] = "p";
+        solution2 = solution2.replace(char, "_");
       }
     }
 
-    return { newRow, newTried, newPresent, newCorrect };
+    return { newMatrixRow, newTried, newPresent, newCorrect };
   };
 
   const processWord = (word) => {
-    if (!ended) {
-      const { newRow, newTried, newPresent, newCorrect } = processWord_(word);
+    if (gameStatus == "PLAYING") {
+      const { newMatrixRow, newTried, newPresent, newCorrect } =
+        processWord_(word);
 
-      setAttempts([...attempts, word]);
-      setMatrix([...matrix, newRow]);
+      const newAttempts = [...attempts, word];
+
+      setAttempts(newAttempts);
+      setMatrix([...matrix, newMatrixRow]);
       setTried([...tried, ...newTried]);
       setPresent([...present, ...newPresent]);
       setCorrect([...correct, ...newCorrect]);
 
-      if (word == target) {
-        setEnded(true);
-        setWon(true);
-      }
-
-      if (attempts.length == 5) {
-        setEnded(true);
+      if (word == solution) {
+        setGameStatus("WIN");
+      } else if (newAttempts.length == 6) {
+        setGameStatus("LOSE");
       }
     }
   };
 
+  function saveGame() {
+    const lastPlayed = DateTime.local({
+      zone: "America/New_York",
+    });
+
+    // let today = DateTime.local({ zone: "America/New_York" });
+    // // today = today.plus(Duration.fromObject({ day: 1 }));
+    // let nextGameStartsAt = getEndTimeForDate(today);
+    // const savedGameEndDay = getEndTimeForDate(lastPlayed);
+
+    // console.log("!!");
+    // console.log(today.toISO());
+    // console.log(nextGameStartsAt.toISO());
+    // console.log(lastPlayed.toISO());
+    // console.log(savedGameEndDay.toISO());
+    // console.log(nextGameStartsAt.equals(savedGameEndDay));
+
+    localStorage.setItem(
+      "gameState",
+      JSON.stringify({
+        board: attempts,
+        lastPlayedTs: lastPlayed.valueOf(),
+      })
+    );
+  }
+
   useEffect(() => {
     // Set word to the day
-    const todaysWord = getTodaysWord(today_);
-    setTarget(todaysWord);
+    let today = DateTime.local({ zone: "America/New_York" });
+    // today = today.plus(Duration.fromObject({ day: 1 }));
+    let nextGameStartsAt = getEndTimeForDate(today);
 
-    // Load and process values from cookies
-    if (cookies.attempts) {
-      let cMatrix = [];
-      let cTried = [];
-      let cPresent = [];
-      let cCorrect = [];
+    const solution_ = getTodaysWord(today);
+    setSolution(solution_);
 
-      for (let i = 0; i < cookies.attempts.length; i++) {
-        const word = cookies.attempts[i];
-        const { newRow, newTried, newPresent, newCorrect } = processWord_(
-          word,
-          todaysWord
-        );
+    // Load and process values from storage
+    const gameState = localStorage.getItem("gameState");
 
-        cMatrix = [...cMatrix, newRow];
-        cTried = [...cTried, ...newTried];
-        cPresent = [...cPresent, ...newPresent];
-        cCorrect = [...cCorrect, ...newCorrect];
+    if (gameState) {
+      const state = JSON.parse(gameState);
 
-        if (word == todaysWord) {
-          setEnded(true);
-          setWon(true);
+      let lastPlayed = DateTime.fromMillis(state.lastPlayedTs, {
+        zone: "America/New_York",
+      });
+      const savedGameEndDay = getEndTimeForDate(lastPlayed);
+
+      if (!nextGameStartsAt.equals(savedGameEndDay)) {
+        // New day: Reset game
+        setAttempts([]);
+        setGameStatus("PLAYING");
+      } else {
+        // Load board
+        let matrix_ = [];
+        let tried_ = [];
+        let present_ = [];
+        let correct_ = [];
+
+        for (let i = 0; i < state.board.length; i++) {
+          const word = state.board[i];
+          const { newMatrixRow, newTried, newPresent, newCorrect } =
+            processWord_(word, solution_);
+
+          matrix_ = [...matrix_, newMatrixRow];
+          tried_ = [...tried_, ...newTried];
+          present_ = [...present_, ...newPresent];
+          correct_ = [...correct_, ...newCorrect];
+
+          if (word == solution_) {
+            setGameStatus("WIN");
+          }
+        }
+
+        setAttempts(state.board);
+        setMatrix(matrix_);
+        setTried(tried_);
+        setPresent(present_);
+        setCorrect(correct_);
+
+        if (state.board.length == 6) {
+          setGameStatus("LOSE");
         }
       }
-
-      setAttempts(cookies.attempts);
-      setMatrix(cMatrix);
-      setTried(cTried);
-      setPresent(cPresent);
-      setCorrect(cCorrect);
-
-      if (cookies.attempts.length == 6) {
-        setEnded(true);
-      }
+    } else {
+      setGameStatus("NEW");
     }
-
-    if (!cookies.first_visit) {
-      setFirstVisit(true);
-    }
-
-    setExpires(today_);
-    setExpires(expires_);
   }, []);
 
+  useEffect(() => {
+    saveGame();
+  });
+
   const values = {
-    target,
-    setTarget,
+    solution,
+    setSolution,
     attempts,
     setAttempts,
     matrix,
@@ -202,15 +212,10 @@ export const GameContextProvider = (props) => {
     setPresent,
     correct,
     setCorrect,
-    firstVisit,
-    setFirstVisit,
-    ended,
-    setEnded,
-    won,
-    setWon,
-    today,
-    expires,
+    gameStatus,
+    setGameStatus,
     processWord,
+    saveGame,
   };
 
   return (

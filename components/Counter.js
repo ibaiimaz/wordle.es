@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import React, { useContext, useEffect, useState } from "react";
-import { GameContext } from "./GameContext";
+import { GameContext, getEndTimeForDate } from "./GameContext";
 
 export default function Counter() {
   const [time, setTime] = useState(
@@ -18,7 +18,8 @@ export default function Counter() {
     };
   }, []);
 
-  const diff = game.expires.diff(time, ["hours", "minutes", "seconds"]);
+  const endDate = getEndTimeForDate(time);
+  const diff = endDate.diff(time, ["hours", "minutes", "seconds"]);
 
   const hours = String(parseInt(diff.hours)).padStart(2, "0");
   const minutes = String(parseInt(diff.minutes)).padStart(2, "0");
