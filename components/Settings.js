@@ -7,11 +7,10 @@ export default function Settings({ closeModal }) {
   return (
     <>
       <div className="container mx-auto max-w-lg h-screen bg-white overflow-x-hidden overflow-y-auto fixed inset-0 z-50">
-        <div className="relative mx-auto w-full ">
-          {/* content */}
-          <div className="flex flex-col w-full outline-none focus:outline-none">
+        <div className="relative mx-auto h-full">
+          <div className="flex flex-col w-full h-full outline-none focus:outline-none">
             {/* header */}
-            <div className="relative m-5 pb-0">
+            <div className="flex-initial relative m-5">
               <h3 className="flex-auto uppercase text-center text-xl font-bold">
                 Opciones
               </h3>
@@ -26,7 +25,7 @@ export default function Settings({ closeModal }) {
             </div>
 
             {/* body */}
-            <div className="px-6 flex-auto">
+            <div className="flex-auto grow mx-5">
               <div class="flex py-5 border-b border-solid">
                 <div class="flex flex-auto">
                   <p className="text-md">Modo para Daltónicos</p>
@@ -44,6 +43,27 @@ export default function Settings({ closeModal }) {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* body */}
+            <div className="flex-initial my-2 mx-6 ">
+              <p class="text-[10px] text-gray-500">
+                Version en Español de{" "}
+                <a
+                  href="https://www.powerlanguage.co.uk/wordle/"
+                  className="underline"
+                >
+                  Wordle
+                </a>{" "}
+                creado por{" "}
+                <a
+                  href="https://www.powerlanguage.co.uk/"
+                  className="underline"
+                >
+                  Josh Wardle
+                </a>
+                .
+              </p>
             </div>
           </div>
         </div>
