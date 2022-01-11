@@ -53,7 +53,7 @@ export default function InfoModal({ closeModal }) {
               {/* bottom */}
               <div className="flex flex-row items-start gap-10 mb-4">
                 <p className="flex-auto my-4 text-md font-bold">
-                  Una palabra nueva cada día!
+                  ¡Una palabra nueva cada día!
                 </p>
                 <button
                   className="bg-correct text-white active:bg-correct font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
