@@ -52,6 +52,8 @@ export const GameContextProvider = (props) => {
   const [colorBlind, setColorBlind] = useState(false);
 
   const processWord_ = (word, solution_) => {
+    // Internal logic to parse the word and determine if it is correct or not
+
     let solution2 = solution || solution_;
     let newMatrixRow = ["x", "x", "x", "x", "x"];
     let newTried = [];
@@ -128,21 +130,20 @@ export const GameContextProvider = (props) => {
   }
 
   useEffect(() => {
-    // Load settings from local storage
+    // Load settings
     const colorBlind_ = localStorage.getItem("colorBlindTheme");
     if (colorBlind_) {
       setColorBlind(JSON.parse(colorBlind_));
     }
 
-    // Set word to the day
+    // Set word of the day
     let today = DateTime.local({ zone: "America/New_York" });
-    // today = today.plus(Duration.fromObject({ day: 1 }));
     let nextGameStartsAt = getEndTimeForDate(today);
 
     const solution_ = getTodaysWord(today);
     setSolution(solution_);
 
-    // Load and process values from storage
+    // Load gameState
     const gameState = localStorage.getItem("gameState");
 
     if (gameState) {
@@ -158,7 +159,7 @@ export const GameContextProvider = (props) => {
         // New day: Reset game
         setAttempts([]);
       } else {
-        // Load board
+        // Same day: Load board
         let matrix_ = [];
         let tried_ = [];
         let present_ = [];
