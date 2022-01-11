@@ -1,3 +1,12 @@
+function withOpacityValue(variable) {
+  return ({ opacityValue }) => {
+    if (opacityValue === undefined) {
+      return `rgb(var(${variable}))`;
+    }
+    return `rgb(var(${variable}) / ${opacityValue})`;
+  };
+}
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -6,14 +15,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        absent: "rgb(120, 124, 126)",
-        present: "rgb(201, 180, 88)",
-        correct: "rgb(106, 170, 100)",
+        absent: withOpacityValue("--color-absent"),
+        present: withOpacityValue("--color-present"),
+        correct: withOpacityValue("--color-correct"),
       },
       screens: {
         tiny: "320px",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tw-elements/dist/plugin")],
 };

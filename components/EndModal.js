@@ -21,9 +21,17 @@ export default function WinModal({ matrix, closeModal }) {
       const state = matrix[i][j];
 
       if (state == "c") {
-        row.push("🟩");
+        if (game.colorBlind) {
+          row.push("🟧");
+        } else {
+          row.push("🟩");
+        }
       } else if (state == "p") {
-        row.push("🟨");
+        if (game.colorBlind) {
+          row.push("🟦");
+        } else {
+          row.push("🟨");
+        }
       } else {
         row.push("⬜");
       }

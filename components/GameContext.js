@@ -8,16 +8,19 @@ const game = {
   attempts: [],
   setAttempts: () => {},
   matrix: [],
-  setTried: () => {},
-  tried: [],
   setMatrix: () => {},
+  tried: [],
+  setTried: () => {},
   present: [],
   setPresent: () => {},
   correct: [],
   setCorrect: () => {},
   gameStatus: null,
   setGameStatus: () => {},
+  processWord: () => {},
   saveGame: () => {},
+  colorBlind: false,
+  setColorBlind: () => {},
 };
 
 export const GameContext = React.createContext({ game });
@@ -46,7 +49,7 @@ export const GameContextProvider = (props) => {
   const [present, setPresent] = useState([]);
   const [correct, setCorrect] = useState([]);
   const [gameStatus, setGameStatus] = useState("PLAYING");
-  const [expires, setExpires] = useState(null);
+  const [colorBlind, setColorBlind] = useState(false);
 
   const processWord_ = (word, solution_) => {
     let solution2 = solution || solution_;
@@ -113,18 +116,6 @@ export const GameContextProvider = (props) => {
       zone: "America/New_York",
     });
 
-    // let today = DateTime.local({ zone: "America/New_York" });
-    // // today = today.plus(Duration.fromObject({ day: 1 }));
-    // let nextGameStartsAt = getEndTimeForDate(today);
-    // const savedGameEndDay = getEndTimeForDate(lastPlayed);
-
-    // console.log("!!");
-    // console.log(today.toISO());
-    // console.log(nextGameStartsAt.toISO());
-    // console.log(lastPlayed.toISO());
-    // console.log(savedGameEndDay.toISO());
-    // console.log(nextGameStartsAt.equals(savedGameEndDay));
-
     localStorage.setItem(
       "gameState",
       JSON.stringify({
@@ -132,9 +123,17 @@ export const GameContextProvider = (props) => {
         lastPlayedTs: lastPlayed.valueOf(),
       })
     );
+
+    localStorage.setItem("colorBlindTheme", JSON.stringify(colorBlind));
   }
 
   useEffect(() => {
+    // Load settings from local storage
+    const colorBlind_ = localStorage.getItem("colorBlindTheme");
+    if (colorBlind_) {
+      setColorBlind(JSON.parse(colorBlind_));
+    }
+
     // Set word to the day
     let today = DateTime.local({ zone: "America/New_York" });
     // today = today.plus(Duration.fromObject({ day: 1 }));
@@ -216,6 +215,8 @@ export const GameContextProvider = (props) => {
     setGameStatus,
     processWord,
     saveGame,
+    colorBlind,
+    setColorBlind,
   };
 
   return (

@@ -29,8 +29,6 @@ class MyDocument extends Document {
           <meta name="twitter:card" content="summary_large_image"></meta>
           <meta property="twitter:domain" content="wordle.danielfrg.com"></meta>
 
-          <meta name="theme-color" content="#6aaa64"></meta>
-          <link rel="manifest" href="manifest.json" />
           <link
             href="/images/wordle_logo_32x32.png"
             rel="icon shortcut"
